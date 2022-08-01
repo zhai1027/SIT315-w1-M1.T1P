@@ -1,0 +1,53 @@
+// C++ code
+// https://arduinogetstarted.com/tutorials/arduino-ultrasonic-sensor-led
+// https://create.arduino.cc/projecthub/abdularbi17/ultrasonic-sensor-hc-sr04-with-arduino-tutorial-327ff6
+// https://www.arduino.cc/en/Tutorial/BuiltInExamples/Blink
+// Ultrasonic sensor code from Arduino tutorials sample code.
+
+// defines variables
+#define echoPin 2
+#define trigPin 7
+#define LED A0
+
+long duration; // variable for the duration of sound wave travel
+long distance; // variable for the distance measurement
+
+void setup() {
+  pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
+  pinMode(echoPin, INPUT); // Sets the echoPin as an INPUT
+  Serial.begin(9600); // Serial Communication is starting with 9600 of baudrate speed
+  
+  pinMode(LED_BUILTIN, OUTPUT);//Set the LED as an INPUT
+}
+void loop() {
+  // Clears the trigPin condition
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin HIGH (ACTIVE) for 10 microseconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  duration = pulseIn(echoPin, HIGH);
+  // Calculating the distance
+  distance = duration * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
+  // Displays the distance on the Serial Monitor
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+  
+  if (distance < 150)
+  {
+    digitalWrite(LED, HIGH);//Turn the LED on
+    Serial.println("Distance < 150, LED ON");
+    delay(2000);
+    Serial.println("");
+  }
+  else
+  {
+    digitalWrite(LED, LOW);//Turn off the LED
+    Serial.println("Distance >= 150, LED OFF");
+    delay(2000);
+    Serial.println("");
+  }
+}
